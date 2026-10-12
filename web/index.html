@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TMQA - Tone-Mapping Quality</title>
+  <meta name="description" content="Objective quality assessment of HDR tone-mapped images (TMQI) running fully in the browser." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.8.1/build/stlite.css" />
+  <style>
+    #loading { font-family: system-ui, sans-serif; max-width: 640px; margin: 15vh auto; padding: 0 16px; color: #333; }
+    #loading h1 { font-size: 1.6rem; margin-bottom: .3rem; }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="loading">
+      <h1>🌅 TMQA — Quality Assessment of HDR Tone-Mapped Images</h1>
+      <p>Loading the Python runtime in your browser (first visit can take 20–60 s)…</p>
+    </div>
+  </div>
+  <script type="module">
+    import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@1.8.1/build/stlite.js";
+
+    // Python sources are served next to this page by the Pages workflow.
+    const sources = [
+      "app.py",
+      "tmqa/__init__.py",
+      "tmqa/cli.py",
+      "tmqa/dataset.py",
+      "tmqa/evaluation.py",
+      "tmqa/hdr_io.py",
+      "tmqa/synthetic.py",
+      "tmqa/tmqi.py",
+      "tmqa/tonemap.py",
+    ];
+    const files = Object.fromEntries(
+      sources.map((p) => [p, { url: new URL(p, window.location.href).href }])
+    );
+    document.getElementById("loading").remove();
+    mount(
+      {
+        requirements: ["numpy", "scipy", "pandas", "pillow", "matplotlib"],
+        entrypoint: "app.py",
+        files,
+      },
+      document.getElementById("root")
+    );
+  </script>
+</body>
+</html>

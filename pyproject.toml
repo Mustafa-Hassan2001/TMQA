@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmqa"
+version = "0.1.0"
+description = "Objective quality assessment of tone-mapped HDR images (TMQI) and benchmarking of tone-mapping operators"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.22", "scipy>=1.9", "pandas>=1.4", "pillow>=9"]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.5"]
+ui = ["streamlit>=1.30", "matplotlib>=3.5"]
+exr = ["imageio>=2.20"]
+dev = ["pytest>=7", "matplotlib>=3.5"]
+
+[project.scripts]
+tmqa = "tmqa.cli:main"
+
+[tool.setuptools]
+packages = ["tmqa"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
